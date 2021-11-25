@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connection_status">Connection Status</string>
+    <string name="on_off">On/Off</string>
+    <string name="discover">Discover</string>
+</resources>
