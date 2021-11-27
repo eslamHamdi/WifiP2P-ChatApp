@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eslam.wifip2pchat">
 
-    <uses-sdk android:minSdkVersion="14"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <uses-permission
         android:name="android.permission.ACCESS_WIFI_STATE"
         android:required="true" />
@@ -14,6 +15,7 @@
         android:name="android.permission.INTERNET"
         android:required="true" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
 
     <application
