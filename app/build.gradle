@@ -41,4 +41,10 @@ dependencies {
 
     //permissions
     implementation 'pub.devrel:easypermissions:3.0.0'
+
+    //lifeCycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.0"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:2.4.0"
+
 }

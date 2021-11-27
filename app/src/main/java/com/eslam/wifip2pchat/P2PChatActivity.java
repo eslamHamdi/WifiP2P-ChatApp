@@ -224,20 +224,12 @@ public class P2PChatActivity extends AppCompatActivity implements EasyPermission
 
         boolean permissionState;
 
-
-       if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-             permissionState = EasyPermissions.hasPermissions(
-                    context,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            );
-
-        } else {
             permissionState = EasyPermissions.hasPermissions(
                     context,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             );
-        }
+
 
        return permissionState;
     }
