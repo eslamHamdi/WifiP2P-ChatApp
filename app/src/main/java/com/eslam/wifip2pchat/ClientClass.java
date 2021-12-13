@@ -7,12 +7,16 @@ import android.os.Looper;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.CharBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,6 +28,8 @@ public class ClientClass extends Thread{
     MutableLiveData<String> message_Sent = new MutableLiveData<String>();
     MutableLiveData<String> message_Recieved = new MutableLiveData<String>();
     byte[] buffer;
+    BufferedReader dataIn;
+    PrintWriter dataOut;
 
     public ClientClass(String hostAddress)
     {
@@ -38,8 +44,9 @@ public class ClientClass extends Thread{
     {
         try {
             outputStream.write(msg.getBytes());
+            //dataOut.write(msg);
             message_Sent.postValue(msg);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -49,7 +56,9 @@ public class ClientClass extends Thread{
         try {
             socket.connect(new InetSocketAddress(hostAdd,8888),1000);
             inputStream = socket.getInputStream();
-            outputStream = socket.getOutputStream();
+           outputStream = socket.getOutputStream();
+            //dataIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //dataOut = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,13 +71,15 @@ public class ClientClass extends Thread{
             @Override
             public void run() {
 
-                int bytes;
+                int bytes = 0;
 
                 while (socket != null)
                 {
                     try {
-                        bytes = inputStream.read(buffer);
-
+                        if (inputStream != null) {
+                            bytes = inputStream.read(buffer);
+                            //dataIn.read(CharBuffer.wrap(message_Recieved.getValue()));
+                        }
                         if (bytes > 0)
                         {
                             int finalBytes = bytes;
@@ -78,8 +89,7 @@ public class ClientClass extends Thread{
                                     message_Recieved.postValue(new String(buffer,0,finalBytes));
                                 }
                             });
-                        }
-                    } catch (IOException e) {
+                        } } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }

@@ -12,6 +12,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -59,6 +61,7 @@ public class P2PChatActivity extends AppCompatActivity implements EasyPermission
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,10 +75,16 @@ public class P2PChatActivity extends AppCompatActivity implements EasyPermission
         createIntentFilter();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, new ArrayList<String>());
         binding.devicesList.setAdapter(arrayAdapter);
+manager.requestP2pState(channel, new WifiP2pManager.P2pStateListener() {
+    @Override
+    public void onP2pStateAvailable(int i) {
 
+    }
+});
        turnOn_OffWifi();
        discoverPeers();
        listItemsListener();
+        resumeChat();
 
 
     }
@@ -91,18 +100,18 @@ public class P2PChatActivity extends AppCompatActivity implements EasyPermission
                 if (isConnected)
                 {
                     Intent intent = new Intent(P2PChatActivity.this,MessagesActivity.class);
-//                if (isHost)
-//                {
-//
-//                    intent.putExtra("status",true);
-//                    Log.e(null, "onClick: "+ isHost );
-//
-//                }else
-//                {
-//                    intent.putExtra("status",false);
-//                    intent.putExtra("hostAddress",groupOwnerAddress);
-//                    Log.e(null, "onClick: "+ groupOwnerAddress );
-//                }
+                if (isHost)
+                {
+
+                    intent.putExtra("status",true);
+                    Log.e(null, "onClick: "+ isHost );
+
+                }else
+                {
+                    intent.putExtra("status",false);
+                    intent.putExtra("hostAddress",groupOwnerAddress);
+                    Log.e(null, "onClick: "+ groupOwnerAddress );
+                }
                     startActivity(intent);
                 }
 
@@ -116,7 +125,7 @@ public class P2PChatActivity extends AppCompatActivity implements EasyPermission
             @SuppressLint("MissingPermission")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final WifiP2pDevice device = peers.get(position);
+                 WifiP2pDevice device = peers.get(position);
                 WifiP2pConfig config = new WifiP2pConfig();
                 config.deviceAddress = device.deviceAddress;
                 config.wps.setup = WpsInfo.PBC;

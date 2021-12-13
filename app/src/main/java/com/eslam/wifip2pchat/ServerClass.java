@@ -8,10 +8,14 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.nio.CharBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,14 +24,18 @@ public  class ServerClass extends Thread {
     ServerSocket serverSocket;
     private InputStream inputStream;
     private OutputStream outputStream;
+    BufferedReader dataIn;
+    PrintWriter dataOut;
     MutableLiveData<String> message_Sent = new MutableLiveData<String>();
     MutableLiveData<String> message_Recieved = new MutableLiveData<String>();
+    int recieved_bytes = 0;
 
 
     void write(String msg)
     {
         try {
             outputStream.write(msg.getBytes());
+           // dataOut.write(msg);
             message_Sent.postValue(msg);
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,6 +51,8 @@ public  class ServerClass extends Thread {
             serverSocket = new ServerSocket(8888);
             socket = serverSocket.accept();
             inputStream = socket.getInputStream();
+           // dataIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //dataOut = new PrintWriter(socket.getOutputStream(),true);
             outputStream = socket.getOutputStream();
 
         } catch (IOException e) {
@@ -58,13 +68,21 @@ public  class ServerClass extends Thread {
             @Override
             public void run() {
                 byte[] buffer = new byte[1024];
-                int recieved_bytes;
+
                 int sent_bytes;
 
                 while (socket != null)
                 {
+
+
+
                     try {
-                        recieved_bytes = inputStream.read(buffer);
+                        if (inputStream != null)
+                        {
+                            recieved_bytes = inputStream.read(buffer);
+
+                        }
+
 
 
                         if (recieved_bytes > 0)

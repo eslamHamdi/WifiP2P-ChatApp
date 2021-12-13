@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 
 import android.content.Context;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -34,6 +35,7 @@ public class MessagesActivity extends AppCompatActivity {
     private MessagesAdapter adapter;
     private Vibrator vibe;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +43,16 @@ public class MessagesActivity extends AppCompatActivity {
        status = this.getIntent().getBooleanExtra("status",false);
         vibe = (Vibrator) MessagesActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
 
+
        if(status)
        {
 
-           serverClass = new ServerClass();
-           serverClass.start();
+           if (serverClass == null)
+           {
+               serverClass = new ServerClass();
+               serverClass.start();
+           }
+
            observeSentMessages_ServerSide();
            observeRecievedMessages_ServerSide();
            Log.e(null, "onCreate: messages "+status );
@@ -54,8 +61,12 @@ public class MessagesActivity extends AppCompatActivity {
            Log.e(null, "onCreate: messages "+status );
            hostAddress = this.getIntent().getStringExtra("hostAddress");
            Log.e(null, "onCreate: messages "+hostAddress );
-           clientClass = new ClientClass(hostAddress);
-           clientClass.start();
+           if (clientClass == null)
+           {
+               clientClass = new ClientClass(hostAddress);
+               clientClass.start();
+           }
+
            observeSentMessages_ClientSide();
            observeRecievedMessages_ClientSide();
        }
@@ -167,15 +178,15 @@ public class MessagesActivity extends AppCompatActivity {
     {
 
         try {
-            socket.shutdownOutput();
-            socket.shutdownInput();
-            socket.close();
+            //socket.shutdownOutput();
+            //socket.shutdownInput();
+
             if (status)
             {
-                serverClass.interrupt();
+                serverClass.serverSocket.close();
             }else
             {
-                clientClass.interrupt();
+                socket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,7 +197,8 @@ public class MessagesActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        socketRelease();
+       socketRelease();
+
         super.onDestroy();
     }
 }

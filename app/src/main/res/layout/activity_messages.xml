@@ -35,7 +35,9 @@
             app:layout_constraintEnd_toStartOf="@id/send"
             android:background="@drawable/rounded_corner"
             android:hint="message"
+            android:textColorHint="@color/design_default_color_secondary"
 
+            android:textColor="@color/design_default_color_on_secondary"
             android:padding="5dp"
             android:layout_margin="5dp" />
 
