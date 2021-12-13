@@ -1,4 +1,4 @@
-package com.eslam.wifip2pchat;
+package com.eslam.wifip2pchat.model;
 
 public class MessageModel {
 

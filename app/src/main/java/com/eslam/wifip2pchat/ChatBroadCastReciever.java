@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
 
 public class ChatBroadCastReciever extends BroadcastReceiver {
 
@@ -50,12 +51,12 @@ public class ChatBroadCastReciever extends BroadcastReceiver {
             if(manager != null) {
                 NetworkInfo networkInfo = (NetworkInfo) intent
                         .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
-
+ 
                 if (networkInfo.isConnected()) {
 
                     // We are connected with the other device, request connection
                     // info to find group owner IP
-
+                    Log.e(null, "onReceive: requestConnectionInfo " );
                     manager.requestConnectionInfo(channel, activity.connectionInfoListener);
 
                 }

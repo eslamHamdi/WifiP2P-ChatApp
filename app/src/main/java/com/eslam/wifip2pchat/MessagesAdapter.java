@@ -8,12 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eslam.wifip2pchat.model.MessageModel;
+
 import java.util.ArrayList;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
-    private ArrayList<MessageModel> modelList;
+    private ArrayList<MessageModel> modelList = new ArrayList<>();
     private View view;
+
 
     @NonNull
     @Override
@@ -42,7 +45,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return modelList.size();
+
+            return modelList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder
@@ -83,5 +87,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         }
 
 
+    }
+
+    void buildList(MessageModel model)
+    {
+        modelList.add(model);
+        notifyDataSetChanged();
     }
 }

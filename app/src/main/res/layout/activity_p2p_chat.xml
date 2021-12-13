@@ -17,30 +17,30 @@
             android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/connection_status"
             android:background="@color/purple_200"
+            android:text="@string/connection_status"
             android:textAlignment="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="40dp"
             android:gravity="center"
-            android:layout_marginTop="40dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/on_off"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/on_off"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:text="@string/on_off" />
 
             <Button
                 android:id="@+id/discover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/discover"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp"
+                android:text="@string/discover" />
         </LinearLayout>
 
         <ListView
@@ -49,6 +49,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="#FFEB3B" />
+
+        <Button
+            android:id="@+id/resumeChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="Resume Chat" />
 
     </LinearLayout>
 </layout>
